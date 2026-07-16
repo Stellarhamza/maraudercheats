@@ -3,9 +3,9 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import { productInfo, siteConfig } from '../../data/site';
 import { maraudersImages } from '../../data/marauders';
 
-const title = 'Marauders Cheats Pricing – Packages & Durations';
+const title = 'Marauders Cheats Pricing – Monthly & Lifetime';
 const description =
-	'Compare Marauders Cheats pricing for 1 Day, 1 Week, and 1 Month packages. Review delivery details and support options before purchase.';
+	'Compare Marauders Cheats pricing for Monthly and Lifetime packages. Review delivery details and support options before purchase.';
 ---
 
 <PageLayout
@@ -13,7 +13,7 @@ const description =
 	description={description}
 	canonicalPath="/pricing/"
 	heading="Marauders Cheats Pricing"
-	intro="Packages are sold by duration in USD and include the Marauders Cheats ESP and Aimbot product line."
+	intro="Packages are sold in USD and include the Marauders Cheats ESP and Aimbot product line."
 	heroImage={maraudersImages.cover}
 	heroAlt="Marauders Cheats pricing visual"
 	gallery={[maraudersImages.product[1], maraudersImages.product[3], maraudersImages.product[5]]}
@@ -25,7 +25,7 @@ const description =
 		<div class="price-grid">
 			{
 				productInfo.plans.map((plan) => (
-					<article class:list={['price-card', { 'is-featured': plan.id === '1week' }]}>
+					<article class:list={['price-card', { 'is-featured': plan.id === 'lifetime' }]}>
 						<span class="price-card__label">{plan.label}</span>
 						<span class="price-card__price">${plan.price}</span>
 						<span class="price-card__meta">{productInfo.currency} · ESP + Aimbot</span>
@@ -38,7 +38,7 @@ const description =
 	<section class="card-panel">
 		<h2>What each package includes</h2>
 		<p>
-			Each duration includes access to the Marauders Cheats feature set described on
+			Each package includes access to the Marauders Cheats feature set described on
 			<a href="/features/">Features</a>, including ESP and Aimbot options. Delivery method:
 			{productInfo.delivery}.
 		</p>

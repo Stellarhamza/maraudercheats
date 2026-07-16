@@ -1,9 +1,9 @@
-import { mainNav } from './site';
+import { siteConfig } from './site';
 
 export const maraudersImages = {
 	hero: '/images/hero.webp',
 	cover: '/images/cover.webp',
-	logo: '/images/zadeyo-logo-full.webp',
+	logo: siteConfig.logo,
 	product: [
 		{ src: '/images/product-2.webp', alt: 'Marauders gameplay preview used on the product page' },
 		{ src: '/images/product-3.webp', alt: 'Marauders combat scene preview' },
@@ -22,6 +22,3 @@ export const maraudersImages = {
 		{ src: '/images/product-7.webp', alt: 'Marauders space combat preview' },
 	],
 } as const;
-
-/** Kept for Navbar compatibility; points to SEO nav. */
-export const navLinks = mainNav;

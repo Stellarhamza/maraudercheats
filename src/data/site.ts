@@ -4,6 +4,8 @@ export const siteConfig = {
 	locale: 'en',
 	market: 'Worldwide',
 	supportEmail: 'support@marauderscheats.com',
+	logo: '/images/zadeyo-logo.png',
+	checkoutUrl: 'https://zadeyo.com/products/marauders-cheats',
 	defaultOgImage: '/images/hero.webp',
 } as const;
 
@@ -19,9 +21,8 @@ export const productInfo = {
 	updateCadence: 'Updates are published when game patches require maintenance',
 	supportHours: 'Support requests are reviewed daily',
 	plans: [
-		{ id: '1day', label: '1 Day', price: 7, duration: 'P1D' },
-		{ id: '1week', label: '1 Week', price: 19, duration: 'P7D' },
-		{ id: '1month', label: '1 Month', price: 45, duration: 'P30D' },
+		{ id: 'monthly', label: 'Monthly', price: 35, duration: 'P30D' },
+		{ id: 'lifetime', label: 'Lifetime', price: 150, duration: 'P99Y' },
 	],
 	currency: 'USD',
 	features: {
@@ -39,7 +40,7 @@ export const productInfo = {
 		],
 		general: [
 			'In-client feature toggles',
-			'Package lengths for short and longer sessions',
+			'Monthly and lifetime package options',
 			'Product update notices on the Updates page',
 			'Support channel for setup and billing questions',
 		],

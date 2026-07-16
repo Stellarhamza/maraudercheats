@@ -1,192 +1,96 @@
 ---
-import { maraudersImages, navLinks } from '../data/marauders';
+import { maraudersImages } from '../data/marauders';
+import { mainNav, siteConfig } from '../data/site';
+
+const current = Astro.url.pathname;
+const isActive = (href: string) =>
+	href === '/' ? current === '/' : current === href || current.startsWith(href);
 ---
 
 <header class="nav" data-nav>
-	<div class="nav__inner">
+	<div class="nav__bar">
 		<a href="/" class="nav__brand" aria-label="Marauders Cheats Home">
-			<span class="nav__mark">
-				<img
-					src={maraudersImages.logo}
-					alt=""
-					width="64"
-					height="64"
-					class="nav__logo"
-					decoding="async"
-					fetchpriority="high"
-				/>
-			</span>
-			<span class="nav__brand-text">
-				<span class="nav__name">MARAUDERS</span>
-				<span class="nav__tag">Cheats</span>
-			</span>
+			<img
+				src={maraudersImages.logo}
+				alt={siteConfig.name}
+				width="40"
+				height="40"
+				class="nav__logo"
+				decoding="async"
+			/>
+			<span class="nav__name">Marauders</span>
 		</a>
 
 		<nav class="nav__links" aria-label="Primary">
 			{
-				navLinks.map((link) => {
-					const current = Astro.url.pathname;
-					const active =
-						link.href === '/'
-							? current === '/'
-							: current === link.href || current.startsWith(link.href);
-					return (
-						<a href={link.href} class:list={['nav__link', { 'is-active': active }]}>
-							{link.label}
-						</a>
-					);
-				})
+				mainNav.map((link) => (
+					<a href={link.href} class:list={['nav__link', { 'is-active': isActive(link.href) }]}>
+						{link.label}
+					</a>
+				))
 			}
 		</nav>
 
-		<div class="nav__actions">
-			<div class="nav__search" data-search>
-				<button type="button" class="nav__icon-btn" aria-label="Open search" data-search-toggle>
-					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-						<circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.7"></circle>
-						<path d="M16 16l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
-					</svg>
-				</button>
-				<form class="nav__search-panel" data-search-panel hidden role="search">
-					<input
-						type="search"
-						name="q"
-						placeholder="Search Marauders Cheats..."
-						class="nav__search-input"
-						data-search-input
-						autocomplete="off"
-					/>
-					<button type="submit" class="nav__search-go">Go</button>
-				</form>
-			</div>
-
-			<a href="/pricing/" class="nav__cart" data-nav-cart>
-				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-					<path
-						d="M3.5 5h1.7l1.4 10.2a1.5 1.5 0 001.5 1.3h8.7a1.5 1.5 0 001.5-1.2L20 8H7"
-						stroke="currentColor"
-						stroke-width="1.7"
-						stroke-linecap="round"
-						stroke-linejoin="round"></path>
-					<circle cx="9.5" cy="19.5" r="1.3" fill="currentColor"></circle>
-					<circle cx="17" cy="19.5" r="1.3" fill="currentColor"></circle>
-				</svg>
-				<span class="nav__cart-label">Cart</span>
-				<span class="nav__cart-count" data-cart-count>0</span>
-			</a>
-
+		<div class="nav__end">
+			<a href={siteConfig.checkoutUrl} class="nav__cta">Get Access</a>
 			<button
 				type="button"
-				class="nav__menu"
+				class="nav__toggle"
 				aria-label="Open menu"
 				aria-expanded="false"
-				aria-controls="nav-drawer"
+				aria-controls="nav-panel"
 				data-nav-toggle
 			>
-				<span class="nav__menu-lines" aria-hidden="true">
-					<span></span>
-					<span></span>
-					<span></span>
-				</span>
+				<span class="nav__toggle-icon" aria-hidden="true"></span>
 			</button>
 		</div>
 	</div>
 
-	<div class="nav__drawer" id="nav-drawer" data-nav-drawer hidden>
-		<div class="nav__drawer-card">
-			<img
-			src={maraudersImages.hero}
-			alt=""
-			class="nav__drawer-art"
-			width="640"
-			height="360"
-			loading="lazy"
-			decoding="async"
-		/>
-			<div class="nav__drawer-fade"></div>
-			<p class="nav__drawer-kicker">Marauders Cheats</p>
-			<p class="nav__drawer-title">ESP & Aimbot</p>
-		</div>
-		<nav class="nav__drawer-links" aria-label="Mobile">
+	<div class="nav__panel" id="nav-panel" data-nav-panel hidden>
+		<nav class="nav__panel-links" aria-label="Mobile">
 			{
-				navLinks.map((link) => (
-					<a href={link.href} class="nav__drawer-link">
-						<span>{link.label}</span>
-						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-							<path
-								d="M9 6l6 6-6 6"
-								stroke="currentColor"
-								stroke-width="1.8"
-								stroke-linecap="round"
-								stroke-linejoin="round"></path>
-						</svg>
+				mainNav.map((link) => (
+					<a href={link.href} class:list={['nav__panel-link', { 'is-active': isActive(link.href) }]}>
+						{link.label}
 					</a>
 				))
 			}
+			<a href={siteConfig.checkoutUrl} class="nav__panel-cta">Get Access</a>
 		</nav>
 	</div>
 </header>
 
 <script>
 	const nav = document.querySelector('[data-nav]');
-	const toggle = document.querySelector('[data-nav-toggle]');
-	const drawer = document.querySelector('[data-nav-drawer]');
-	const search = document.querySelector('[data-search]');
-	const searchToggle = document.querySelector('[data-search-toggle]');
-	const searchPanel = document.querySelector('[data-search-panel]');
-	const searchInput = document.querySelector('[data-search-input]');
+	if (nav) {
+		const toggle = nav.querySelector('[data-nav-toggle]');
+		const panel = nav.querySelector('[data-nav-panel]');
 
-	const setDrawer = (open: boolean) => {
-		toggle?.setAttribute('aria-expanded', String(open));
-		toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-		if (drawer instanceof HTMLElement) drawer.hidden = !open;
-		document.body.classList.toggle('nav-open', open);
-	};
+		const setOpen = (open: boolean) => {
+			toggle?.setAttribute('aria-expanded', String(open));
+			toggle?.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+			if (panel instanceof HTMLElement) panel.hidden = !open;
+			document.body.classList.toggle('nav-open', open);
+		};
 
-	const setSearch = (open: boolean) => {
-		if (!(searchPanel instanceof HTMLElement)) return;
-		searchPanel.hidden = !open;
-		search?.classList.toggle('is-open', open);
-		if (open && searchInput instanceof HTMLInputElement) {
-			searchInput.focus();
-		}
-	};
+		toggle?.addEventListener('click', () => {
+			setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+		});
 
-	toggle?.addEventListener('click', () => {
-		const open = toggle.getAttribute('aria-expanded') !== 'true';
-		setDrawer(open);
-		if (open) setSearch(false);
-	});
+		panel?.querySelectorAll('a').forEach((link) => {
+			link.addEventListener('click', () => setOpen(false));
+		});
 
-	drawer?.querySelectorAll('a').forEach((link) => {
-		link.addEventListener('click', () => setDrawer(false));
-	});
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape' && panel instanceof HTMLElement && !panel.hidden) {
+				setOpen(false);
+			}
+		});
 
-	searchToggle?.addEventListener('click', () => {
-		const open = searchPanel instanceof HTMLElement ? searchPanel.hidden : false;
-		setSearch(open);
-		if (open) setDrawer(false);
-	});
-
-	searchPanel?.addEventListener('submit', (event) => {
-		event.preventDefault();
-		setSearch(false);
-		window.location.href = '/features/';
-	});
-
-	document.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape') {
-			setDrawer(false);
-			setSearch(false);
-		}
-	});
-
-	const onScroll = () => {
-		nav?.classList.toggle('is-scrolled', window.scrollY > 12);
-	};
-
-	onScroll();
-	window.addEventListener('scroll', onScroll, { passive: true });
+		const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+		onScroll();
+		window.addEventListener('scroll', onScroll, { passive: true });
+	}
 </script>
 
 <style is:global>
@@ -200,436 +104,287 @@ import { maraudersImages, navLinks } from '../data/marauders';
 		position: sticky;
 		top: 0;
 		z-index: 80;
-		isolation: isolate;
+		padding: 0.65rem var(--page-gutter) 0;
+		padding-top: calc(0.65rem + env(safe-area-inset-top, 0px));
+		pointer-events: none;
+	}
+
+	.nav__bar {
+		display: flex;
+		align-items: center;
+		gap: 1.5rem;
+		width: min(100%, var(--page-max));
+		margin: 0 auto;
+		padding: 0.55rem 0.85rem;
+		border-radius: 999px;
+		border: 1px solid rgba(168, 85, 247, 0.12);
+		background: rgba(10, 6, 18, 0.72);
+		backdrop-filter: blur(16px) saturate(1.15);
+		box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+		pointer-events: auto;
 		transition:
 			background 0.25s ease,
-			box-shadow 0.25s ease,
-			border-color 0.25s ease;
-		border-bottom: 1px solid transparent;
-		background: rgba(10, 6, 18, 0.55);
-		backdrop-filter: blur(14px) saturate(1.2);
-		padding-top: env(safe-area-inset-top, 0px);
+			border-color 0.25s ease,
+			box-shadow 0.25s ease;
 	}
 
-	.nav.is-scrolled {
-		background: rgba(10, 6, 18, 0.92);
-		border-bottom-color: rgba(168, 85, 247, 0.14);
-		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-	}
-
-	.nav__inner {
-		display: grid;
-		grid-template-columns: auto 1fr auto;
-		align-items: center;
-		gap: 1rem;
-		width: min(100% - (var(--page-gutter) * 2), var(--page-max));
-		margin: 0 auto;
-		padding: 0.7rem 0;
-		min-height: 4.25rem;
+	.nav.is-scrolled .nav__bar {
+		background: rgba(10, 6, 18, 0.94);
+		border-color: rgba(168, 85, 247, 0.2);
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32);
 	}
 
 	.nav__brand {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.75rem;
-		min-width: 0;
+		gap: 0.6rem;
+		flex-shrink: 0;
+		color: var(--color-ink);
 		transition: opacity 0.2s ease;
 	}
 
 	.nav__brand:hover {
-		opacity: 0.92;
-	}
-
-	.nav__mark {
-		display: grid;
-		place-items: center;
-		width: 2.75rem;
-		height: 2.75rem;
-		flex-shrink: 0;
-		background: transparent;
+		opacity: 0.9;
 	}
 
 	.nav__logo {
 		display: block;
-		width: 2.75rem;
-		height: 2.75rem;
+		width: 2rem;
+		height: 2rem;
 		object-fit: contain;
-		object-position: center;
-	}
-
-	.nav__brand-text {
-		display: flex;
-		flex-direction: column;
-		gap: 0.1rem;
-		line-height: 1;
 	}
 
 	.nav__name {
 		font-family: var(--font-display);
+		font-size: 0.95rem;
 		font-weight: 800;
-		font-size: 0.82rem;
-		letter-spacing: 0.08em;
-		background: linear-gradient(90deg, #c084fc 0%, #e9d5ff 45%, #d946ef 100%);
-		-webkit-background-clip: text;
-		background-clip: text;
-		color: transparent;
-	}
-
-	.nav__tag {
-		font-size: 0.62rem;
-		font-weight: 700;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--color-orchid);
+		letter-spacing: -0.02em;
+		white-space: nowrap;
 	}
 
 	.nav__links {
-		justify-self: center;
-		display: inline-flex;
+		display: flex;
 		align-items: center;
-		gap: 0.2rem;
-		padding: 0.3rem;
-		border-radius: 999px;
-		border: 1px solid rgba(192, 132, 252, 0.16);
-		background: rgba(18, 16, 26, 0.65);
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+		gap: 0.15rem;
+		flex: 1;
+		min-width: 0;
 	}
 
 	.nav__link {
 		position: relative;
-		padding: 0.55rem 1rem;
-		border-radius: 999px;
+		padding: 0.45rem 0.7rem;
+		border-radius: 0.5rem;
 		color: var(--color-muted);
-		font-size: 0.88rem;
-		font-weight: 600;
+		font-size: 0.84rem;
+		font-weight: 500;
 		letter-spacing: 0.01em;
-		transition:
-			color 0.2s ease,
-			background 0.2s ease,
-			box-shadow 0.2s ease;
+		white-space: nowrap;
+		transition: color 0.2s ease;
+	}
+
+	.nav__link::after {
+		content: '';
+		position: absolute;
+		left: 0.7rem;
+		right: 0.7rem;
+		bottom: 0.3rem;
+		height: 1px;
+		border-radius: 1px;
+		background: var(--color-orchid);
+		transform: scaleX(0);
+		transform-origin: center;
+		transition: transform 0.2s ease;
 	}
 
 	.nav__link:hover {
 		color: var(--color-ink);
-		background: rgba(168, 85, 247, 0.1);
 	}
 
 	.nav__link.is-active {
-		color: white;
-		background: linear-gradient(135deg, rgba(124, 58, 237, 0.95), rgba(192, 38, 211, 0.9));
-	}
-
-	.nav__actions {
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		gap: 0.55rem;
-	}
-
-	.nav__search {
-		position: relative;
-		display: flex;
-		align-items: center;
-	}
-
-	.nav__icon-btn,
-	.nav__menu {
-		display: inline-grid;
-		place-items: center;
-		width: 2.5rem;
-		height: 2.5rem;
-		border-radius: 0.8rem;
-		border: 1px solid rgba(192, 132, 252, 0.22);
-		background: rgba(26, 22, 38, 0.88);
 		color: var(--color-ink);
-		transition:
-			border-color 0.2s ease,
-			background 0.2s ease,
-			transform 0.2s ease,
-			box-shadow 0.2s ease;
+		font-weight: 600;
 	}
 
-	.nav__icon-btn:hover,
-	.nav__menu:hover {
-		border-color: rgba(192, 132, 252, 0.45);
-		background: rgba(48, 36, 72, 0.95);
+	.nav__link.is-active::after {
+		transform: scaleX(1);
 	}
 
-	.nav__icon-btn:active,
-	.nav__menu:active,
-	.nav__cart:active {
-		transform: translateY(1px);
-	}
-
-	.nav__search.is-open .nav__icon-btn {
-		border-color: rgba(192, 132, 252, 0.5);
-	}
-
-	.nav__search-panel {
-		position: absolute;
-		top: calc(100% + 0.65rem);
-		right: 0;
+	.nav__end {
 		display: flex;
-		align-items: center;
-		gap: 0.45rem;
-		width: min(300px, calc(100vw - 2rem));
-		padding: 0.55rem;
-		border-radius: 0.9rem;
-		border: 1px solid rgba(192, 132, 252, 0.28);
-		background: rgba(16, 12, 26, 0.96);
-		box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
-		backdrop-filter: blur(12px);
-		animation: nav-pop 0.2s ease;
-	}
-
-	.nav__search-panel[hidden] {
-		display: none;
-	}
-
-	.nav__search-input {
-		flex: 1;
-		min-width: 0;
-		height: 2.35rem;
-		padding: 0 0.85rem;
-		border: 1px solid rgba(192, 132, 252, 0.18);
-		border-radius: 0.65rem;
-		background: rgba(10, 6, 18, 0.8);
-		color: var(--color-ink);
-		font: inherit;
-		font-size: 0.9rem;
-		outline: none;
-	}
-
-	.nav__search-input:focus {
-		border-color: rgba(192, 132, 252, 0.55);
-		box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.18);
-	}
-
-	.nav__search-go {
-		height: 2.35rem;
-		padding: 0 0.9rem;
-		border: 0;
-		border-radius: 0.65rem;
-		background: var(--gradient-brand);
-		color: white;
-		font-weight: 700;
-		font-size: 0.85rem;
-	}
-
-	.nav__cart {
-		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
-		height: 2.5rem;
-		padding: 0 0.95rem;
-		border-radius: 0.8rem;
-		background: var(--gradient-brand);
-		color: white;
-		font-size: 0.88rem;
+		flex-shrink: 0;
+		margin-left: auto;
+	}
+
+	.nav__cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 2.15rem;
+		padding: 0 1rem;
+		border-radius: 999px;
+		background: var(--color-ink);
+		color: var(--color-midnight);
+		font-size: 0.82rem;
 		font-weight: 700;
-		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+		letter-spacing: 0.01em;
 		transition:
 			transform 0.2s ease,
-			filter 0.2s ease,
-			box-shadow 0.2s ease;
+			opacity 0.2s ease;
 	}
 
-	.nav__cart:hover {
+	.nav__cta:hover {
 		transform: translateY(-1px);
-		filter: brightness(1.05);
-		box-shadow: 0 8px 18px rgba(0, 0, 0, 0.32);
+		opacity: 0.92;
+		color: var(--color-midnight);
 	}
 
-	.nav__cart-count {
-		display: inline-grid;
-		place-items: center;
-		min-width: 1.25rem;
-		height: 1.25rem;
-		padding-inline: 0.3rem;
-		border-radius: 999px;
-		background: rgba(10, 6, 18, 0.34);
-		font-size: 0.72rem;
-		font-variant-numeric: tabular-nums;
-	}
-
-	.nav__menu {
+	.nav__toggle {
 		display: none;
+		place-items: center;
+		width: 2.15rem;
+		height: 2.15rem;
+		border: 0;
+		border-radius: 999px;
+		background: rgba(168, 85, 247, 0.12);
+		color: var(--color-ink);
+		cursor: pointer;
+		transition: background 0.2s ease;
 	}
 
-	.nav__menu-lines {
-		display: grid;
-		gap: 5px;
-		width: 16px;
+	.nav__toggle:hover {
+		background: rgba(168, 85, 247, 0.22);
 	}
 
-	.nav__menu-lines span {
+	.nav__toggle-icon,
+	.nav__toggle-icon::before,
+	.nav__toggle-icon::after {
 		display: block;
+		width: 16px;
 		height: 2px;
 		border-radius: 2px;
 		background: currentColor;
-		transform-origin: center;
 		transition:
 			transform 0.25s ease,
 			opacity 0.2s ease;
 	}
 
-	.nav__menu[aria-expanded='true'] .nav__menu-lines span:nth-child(1) {
-		transform: translateY(7px) rotate(45deg);
+	.nav__toggle-icon {
+		position: relative;
 	}
 
-	.nav__menu[aria-expanded='true'] .nav__menu-lines span:nth-child(2) {
-		opacity: 0;
+	.nav__toggle-icon::before,
+	.nav__toggle-icon::after {
+		content: '';
+		position: absolute;
+		left: 0;
 	}
 
-	.nav__menu[aria-expanded='true'] .nav__menu-lines span:nth-child(3) {
-		transform: translateY(-7px) rotate(-45deg);
+	.nav__toggle-icon::before {
+		top: -5px;
 	}
 
-	.nav__drawer {
-		width: min(100% - (var(--page-gutter) * 2), var(--page-max));
-		margin: 0 auto;
-		padding: 0.75rem 0 1.25rem;
-		border-top: 1px solid rgba(168, 85, 247, 0.14);
-		background: rgba(10, 6, 18, 0.96);
-		animation: nav-drawer 0.25s ease;
+	.nav__toggle-icon::after {
+		top: 5px;
 	}
 
-	.nav__drawer[hidden] {
+	.nav__toggle[aria-expanded='true'] .nav__toggle-icon {
+		background: transparent;
+	}
+
+	.nav__toggle[aria-expanded='true'] .nav__toggle-icon::before {
+		top: 0;
+		transform: rotate(45deg);
+	}
+
+	.nav__toggle[aria-expanded='true'] .nav__toggle-icon::after {
+		top: 0;
+		transform: rotate(-45deg);
+	}
+
+	.nav__panel {
+		position: fixed;
+		inset: 0;
+		z-index: 79;
+		display: grid;
+		align-content: start;
+		padding: calc(4.5rem + env(safe-area-inset-top, 0px)) var(--page-gutter) 2rem;
+		background: rgba(10, 6, 18, 0.55);
+		backdrop-filter: blur(6px);
+		pointer-events: auto;
+		animation: nav-fade 0.2s ease;
+	}
+
+	.nav__panel[hidden] {
 		display: none;
 	}
 
-	.nav__drawer-card {
-		position: relative;
-		overflow: hidden;
-		border-radius: 1rem;
-		margin-bottom: 0.75rem;
-		aspect-ratio: 16 / 7;
-		border: 1px solid rgba(192, 132, 252, 0.25);
-	}
-
-	.nav__drawer-art {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center 35%;
-	}
-
-	.nav__drawer-fade {
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(180deg, transparent 20%, rgba(10, 6, 18, 0.92) 100%);
-	}
-
-	.nav__drawer-kicker,
-	.nav__drawer-title {
-		position: absolute;
-		left: 1rem;
-		margin: 0;
-		z-index: 1;
-	}
-
-	.nav__drawer-kicker {
-		bottom: 2.2rem;
-		font-size: 0.68rem;
-		font-weight: 700;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		color: var(--color-orchid);
-	}
-
-	.nav__drawer-title {
-		bottom: 0.75rem;
-		font-family: var(--font-display);
-		font-size: 1.35rem;
-		font-weight: 800;
-	}
-
-	.nav__drawer-links {
+	.nav__panel-links {
 		display: grid;
 		gap: 0.35rem;
+		width: min(100%, 22rem);
+		margin: 0 auto;
+		padding: 0.85rem;
+		border-radius: 1rem;
+		border: 1px solid rgba(168, 85, 247, 0.16);
+		background: rgba(16, 12, 26, 0.96);
+		box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
 	}
 
-	.nav__drawer-link {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 0.95rem 1rem;
-		border-radius: 0.85rem;
-		border: 1px solid rgba(192, 132, 252, 0.12);
-		background: rgba(26, 22, 38, 0.7);
-		color: var(--color-ink);
-		font-weight: 600;
+	.nav__panel-link {
+		padding: 0.85rem 1rem;
+		border-radius: 0.65rem;
+		color: var(--color-muted);
+		font-size: 1rem;
+		font-weight: 500;
 		transition:
-			background 0.2s ease,
-			border-color 0.2s ease,
-			transform 0.2s ease;
+			color 0.2s ease,
+			background 0.2s ease;
 	}
 
-	.nav__drawer-link:hover {
-		background: rgba(48, 36, 72, 0.85);
-		border-color: rgba(192, 132, 252, 0.35);
-		transform: translateX(2px);
+	.nav__panel-link:hover,
+	.nav__panel-link.is-active {
+		color: var(--color-ink);
+		background: rgba(168, 85, 247, 0.1);
 	}
 
-	.nav__drawer-link svg {
-		color: var(--color-orchid);
-		opacity: 0.8;
+	.nav__panel-cta {
+		margin-top: 0.35rem;
+		padding: 0.9rem 1rem;
+		border-radius: 0.65rem;
+		background: var(--color-ink);
+		color: var(--color-midnight);
+		font-size: 0.95rem;
+		font-weight: 700;
+		text-align: center;
 	}
 
-	@keyframes nav-pop {
+	@keyframes nav-fade {
 		from {
 			opacity: 0;
-			transform: translateY(-6px);
 		}
 		to {
 			opacity: 1;
-			transform: translateY(0);
 		}
 	}
 
-	@keyframes nav-drawer {
-		from {
-			opacity: 0;
-			transform: translateY(-8px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@media (max-width: 980px) {
+	@media (max-width: 900px) {
 		.nav__links {
 			display: none;
 		}
 
-		.nav__menu {
-			display: inline-grid;
+		.nav__cta {
+			display: none;
 		}
 
-		.nav__inner {
-			grid-template-columns: 1fr auto;
+		.nav__toggle {
+			display: grid;
 		}
 	}
 
-	@media (max-width: 560px) {
-		.nav__cart-label {
-			position: absolute;
-			width: 1px;
-			height: 1px;
-			padding: 0;
-			margin: -1px;
-			overflow: hidden;
-			clip: rect(0, 0, 0, 0);
-			white-space: nowrap;
-			border: 0;
-		}
-
-		.nav__cart {
-			padding-inline: 0.8rem;
-		}
-
-		.nav__tag {
+	@media (max-width: 420px) {
+		.nav__name {
 			display: none;
 		}
 	}

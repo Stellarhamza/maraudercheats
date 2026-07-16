@@ -23,6 +23,7 @@ const {
 const path = canonicalPath.endsWith('/') || canonicalPath.includes('.') ? canonicalPath : `${canonicalPath}/`;
 const canonicalURL = new URL(path === '//' ? '/' : path, siteConfig.url).href;
 const ogImageURL = new URL(ogImage, siteConfig.url).href;
+const logoURL = new URL(siteConfig.logo, siteConfig.url).href;
 const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
 ---
 
@@ -37,7 +38,10 @@ const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview
 		<meta name="googlebot" content={robots} />
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonicalURL} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
 
 		<meta property="og:type" content={type} />
@@ -75,6 +79,11 @@ const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview
 							name: siteConfig.name,
 							url: siteConfig.url,
 							email: siteConfig.supportEmail,
+							logo: {
+								'@type': 'ImageObject',
+								url: logoURL,
+							},
+							image: logoURL,
 						},
 					],
 				})}

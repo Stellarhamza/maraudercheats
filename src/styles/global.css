@@ -126,10 +126,6 @@
 		background: var(--gradient-brand);
 	}
 
-	.bg-brand-x {
-		background: var(--gradient-brand-x);
-	}
-
 	.surface-card {
 		background: linear-gradient(180deg, rgba(34, 28, 48, 0.95) 0%, rgba(18, 16, 26, 0.98) 100%);
 		border: 1px solid var(--color-border);
@@ -168,16 +164,5 @@
 			rgba(10, 6, 18, 0.18) 100%
 		);
 		mix-blend-mode: soft-light;
-	}
-
-	.hide-scrollbar {
-		scrollbar-width: none;
-		-ms-overflow-style: none;
-	}
-
-	.hide-scrollbar::-webkit-scrollbar {
-		display: none;
-		width: 0;
-		height: 0;
 	}
 }

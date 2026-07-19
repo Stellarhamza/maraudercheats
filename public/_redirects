@@ -2,9 +2,10 @@
 # Cloudflare Pages does NOT support domain-level redirects here
 # (http to https, www to apex). Those require:
 # 1) functions/_middleware.js (deployed with this project)
-# 2) Cloudflare SSL/TLS -> Always Use HTTPS
-# 3) Bulk Redirect: www.marauderscheats.com -> https://marauderscheats.com
-#    plus a proxied DNS A record for www -> 192.0.2.1
+# 2) Cloudflare SSL/TLS -> Edge Certificates -> Always Use HTTPS = On
+# 3) Caching -> Configuration -> Purge Everything (after enabling HTTPS)
+# 4) Bulk Redirect: www.marauderscheats.com -> https://marauderscheats.com
+#    plus a proxied DNS A/AAAA/CNAME record for www
 
 /sitemap-index.xml /sitemap.xml 301
 /sitemap-0.xml /sitemap.xml 301
